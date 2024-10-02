@@ -3,7 +3,8 @@ import cookieParser from 'cookie-parser';
 //import MongoStore from 'connect-mongo';
 import { engine } from 'express-handlebars';
 //import sessionsRouter from './routes/sessions.router.js';
-import viewsRouter from './routes/views.routes.js'
+import viewsRouter from './routes/views.routes.js';
+import userRouter from './routes/user.router.js';
 import './database.js';
 
 //passport
@@ -32,6 +33,7 @@ app.set('views', './src/views');
 //Rutas
 
 app.use('/', viewsRouter);
+app.use('/api/sessions/', userRouter)
 
 
 app.listen(PUERTO, ()=>console.log(`App escuchando en el puerto ${PUERTO}`))
