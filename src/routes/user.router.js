@@ -2,6 +2,7 @@ import {Router} from 'express';
 import UserModel from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
+import { createHash, isValidPassword} from '../utils/util.js';
 
 const router = Router ();
 
@@ -30,14 +31,13 @@ router.post('/register', async (req, res) => {
 
 
         const token = jwt.sign({usuario:nuevoUsuario.usuario}, 'roxanap', {expiresIn:'12h'});
-        res.cookie('coderCookieToken', token, {maxAge: 60*60*1000, httpOnly:true}).send ({message:'Login exitoso', token})
+        res.cookie('coderCookieToken', token, {maxAge: 60*60*1000, httpOnly:true})
 
-
-        res.redirect('/home');
+        res.redirect('/api/sessions/current');
 
     }
     catch (error) {
-        res.status(500).send('Error interno del servidor')
+       console.log(error);
     }
 });
 
@@ -62,18 +62,34 @@ router.post('/login', async (req, res) => {
 
     
                const token = jwt.sign({usuario:usuarioEncontrado.usuario}, 'roxanap', {expiresIn:'12h'});
-               res.cookie('coderCookieToken', token, {maxAge: 60*60*1000, httpOnly:true}).send ({message:'Login exitoso', token})
+               res.cookie('coderCookieToken', token, {maxAge: 60*60*1000, httpOnly:true})
     
-    
-               res.redirect('/home')
+               res.redirect('/api/sessions/current')
     
                 
         } catch (error) {
-            res.status(500).send("Error interno del servidor", error);
+            res.status(500).send("Error interno del servidor");
         }
-    })
+    });
 
+    router.get('/current', passport.authenticate('current', {session:false}), (req, res)=>{
+        res.render('home', {usuario: req.user.usuario});
+    } )
 
+    router.get('/logout', (req, res) => {
+        res.clearCookie('coderCookieToken')
+        res.redirect('/login')
+    });
+    
+//Ruta Admin: 
+
+router.get("/admin", passport.authenticate("current", {session: false}), (req, res) => {
+    if(req.user.role !== "admin") {
+        return res.status(403).send("Acceso denegado"); 
+    }
+
+    res.render("admin");
+})
 
 
 export default router;

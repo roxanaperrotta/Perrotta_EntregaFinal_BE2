@@ -1,9 +1,6 @@
 import passport from 'passport';
 import jwt from 'passport-jwt';
 
-//traemos usermodel y las funciones de bcrypt
-import UserModel from '../models/user.model.js';
-import { createHash, isValidPassword } from '../utils/bcrypt.js';
 
 
 //trabajamos con passport jwt
@@ -12,7 +9,7 @@ const JWTStrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt;
 
 const initializePassport = () => {
-    passport.use("jwt", new JWTStrategy({
+    passport.use("current", new JWTStrategy({
         jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]), 
         secretOrKey: "roxanap",
     }, async (jwt_payload, done) => {

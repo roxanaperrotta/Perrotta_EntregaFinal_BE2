@@ -7,12 +7,12 @@ import viewsRouter from './routes/views.routes.js';
 import userRouter from './routes/user.router.js';
 import './database.js';
 
+
 //passport
 
 import passport from 'passport';
-//import initializePassport from './config/passport.config.js';
+import initializePassport from './config/passport.config.js';
 import jwt from 'jsonwebtoken';
-//import { authorization, passportCall } from './utils/passportcall.js';
 
 const app=express();
 const PUERTO=8080;
@@ -22,6 +22,7 @@ const PUERTO=8080;
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(passport.initialize());
+initializePassport();
 app.use(cookieParser());
 
 //express handlebars
