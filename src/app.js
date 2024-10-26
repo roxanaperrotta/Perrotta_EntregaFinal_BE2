@@ -5,8 +5,10 @@ import { engine } from 'express-handlebars';
 //import sessionsRouter from './routes/sessions.router.js';
 import viewsRouter from './routes/views.routes.js';
 import userRouter from './routes/user.router.js';
-import './database.js';
+import BaseDatos from './database.js';
 
+
+const instanciaBD= BaseDatos.getInstancia();
 
 //passport
 

@@ -28,7 +28,8 @@ router.post('/register', async (req, res) => {
             age
 
         });
-
+        
+        await nuevoUsuario.save();
 
         const token = jwt.sign({usuario:nuevoUsuario.usuario}, 'roxanap', {expiresIn:'12h'});
         res.cookie('coderCookieToken', token, {maxAge: 60*60*1000, httpOnly:true})
@@ -71,9 +72,11 @@ router.post('/login', async (req, res) => {
             res.status(500).send("Error interno del servidor");
         }
     });
-
+   
     router.get('/current', passport.authenticate('current', {session:false}), (req, res)=>{
-        res.render('home', {usuario: req.user.usuario});
+          
+           res.render('home', {usuario: req.user.first_name});
+     
     } )
 
     router.get('/logout', (req, res) => {
