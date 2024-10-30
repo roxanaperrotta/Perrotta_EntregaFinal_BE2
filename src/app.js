@@ -1,18 +1,18 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-//import MongoStore from 'connect-mongo';
+import passport from "passport";
 import { engine } from 'express-handlebars';
-//import sessionsRouter from './routes/sessions.router.js';
+
+import sessionsRouter from './routes/session.router.js'
 import viewsRouter from './routes/views.routes.js';
-import userRouter from './routes/user.router.js';
-import BaseDatos from './database.js';
+import productsRouter from './routes/products.router.js';
+import cartsRouter from './routes/cart.router.js';
 
+import './database.js';
 
-const instanciaBD= BaseDatos.getInstancia();
 
 //passport
 
-import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import jwt from 'jsonwebtoken';
 
@@ -23,6 +23,7 @@ const PUERTO=8080;
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(express.static('./src/public'))
 app.use(passport.initialize());
 initializePassport();
 app.use(cookieParser());
@@ -36,7 +37,9 @@ app.set('views', './src/views');
 //Rutas
 
 app.use('/', viewsRouter);
-app.use('/api/sessions/', userRouter)
+app.use('/api/sessions/', sessionsRouter);
+app.use('/api/products', productsRouter );
+app.use('/api/carts', cartsRouter);
 
 
 app.listen(PUERTO, ()=>console.log(`App escuchando en el puerto ${PUERTO}`))

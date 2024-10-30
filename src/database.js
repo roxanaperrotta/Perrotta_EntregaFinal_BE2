@@ -1,25 +1,6 @@
 import mongoose from "mongoose";
-import configObject from "./config/config.js";
-const {mongo_url} = configObject; 
 
-class BaseDatos {
-    static #instancia; 
-    //Se declara una variable estática y privada llamada #instancia. 
+mongoose.connect("mongodb+srv://roxanaperrotta:roxanaperrottacoder@cluster0.ujdlb.mongodb.net/EntregaFinal?retryWrites=true&w=majority&appName=Cluster0")
+    .then(() => console.log("Conexión exitosa ala BD"))
+    .catch((error) => console.log("Error conectándose a la BD", error))
 
-    constructor() {
-        mongoose.connect(mongo_url); 
-    }
-
-    static getInstancia() {
-        if (this.#instancia) {
-            //Si ya tenemos una instancia, la retornamos: 
-            return this.#instancia;
-        }
-        //Caso contrario, la creamos: 
-        this.#instancia = new BaseDatos(); 
-        return this.#instancia; 
-    }
-
-}
-
-export default BaseDatos; 

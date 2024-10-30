@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import UserModel from '../models/user.model.js';
+import UserModel from '../dao/models/user.model.js';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { createHash, isValidPassword} from '../utils/util.js';
